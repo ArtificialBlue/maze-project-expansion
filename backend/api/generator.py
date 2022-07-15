@@ -3,7 +3,8 @@ from itertools import chain
 from datetime import datetime
 import libhoney
 
-libhoney.init(writekey="egpxwJFJei3VrLnf4ay6dQ", dataset="honeycomb-python-maze", debug=True)
+#!Setup as environment variables!#
+libhoney.init(writekey="", dataset="honeycomb-python-maze", debug=True)
 
 maze = []
 
@@ -78,6 +79,7 @@ def make_walls(width, height, parent_id = None, trace_id = random_id(16)):
     "dimension": width
     })
     functionEvent.send()
+
 
 
 
