@@ -1,5 +1,4 @@
 //Random functions done with Math.random()
-//PY: from itertools import chain [Not Needed]
 //PY: from datetime import datetime
 //import Libhoney from "libhoney";
 
@@ -11,11 +10,13 @@
 //    disabled: true // uncomment for testing or development.
 //  });
 
+module.exports = generate_maze;
+
 var maze = [];
 
 
 function random_id(nbytes){
-    //PY: Creates random letter-number ID of nbytes *2  characters long -1.
+    //PY: #Creates random letter-number ID of nbytes *2  characters long -1.
     //b = [random.randint(0, 255) for i in range(nbytes)]
     //return "".join([f"{x:x}" for x in b]) 
 
@@ -303,6 +304,7 @@ function create_maze(maze, width, height, walls){
 }
 }
 
+//export 
 function generate_maze(height, width){
     const wall = "1";
     const cell = "0";
@@ -350,10 +352,3 @@ function generate_maze(height, width){
     return flatten_maze(maze);
 
 }
-
-
-//---------PLAYGROUND----------
-
-console.log(generate_maze(8,8));
-
-//---------------------------
