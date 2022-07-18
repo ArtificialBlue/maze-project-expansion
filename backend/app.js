@@ -12,7 +12,8 @@ app.all('/', function(req, res) {
 })
 
 app.all('/api/:size', (req, res) => {
-  res.send(generate_maze(parseInt(req.params.size),parseInt(req.params.size)) + "\n");
+  var strSize = parseInt(req.params.size);
+  res.send(generate_maze(strSize,strSize) + "\n");
 })
 
 app.listen(port, hostname, () => {

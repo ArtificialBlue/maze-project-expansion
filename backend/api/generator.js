@@ -13,13 +13,6 @@ module.exports = generate_maze;
 
 var maze = [];
 
-
-function random_id(nbytes){
-//     //#Creates random letter-number ID of nbytes *2  characters long -1.
-//     //b = [random.randint(0, 255) for i in range(nbytes)]
-//     //return "".join([f"{x:x}" for x in b]) 
-}
-
 function clear_maze(){
     maze.length = 0;
 }
