@@ -1,10 +1,9 @@
 //Random functions done with Math.random()
-//PY: from datetime import datetime
-//import Libhoney from "libhoney";
+//Datetime functions done with Date() objects/methods
+//var Libhoney = require("libhoney");
 
-
-//let hny = new Libhoney({
-    //#!Setup as environment variables!#
+// let hny = new Libhoney({
+//     //!Setup as environment variables!//
 //    writeKey: "YOUR_API_KEY",
 //    dataset: "honeycomb-python-maze",
 //    disabled: true // uncomment for testing or development.
@@ -16,10 +15,9 @@ var maze = [];
 
 
 function random_id(nbytes){
-    //PY: #Creates random letter-number ID of nbytes *2  characters long -1.
-    //b = [random.randint(0, 255) for i in range(nbytes)]
-    //return "".join([f"{x:x}" for x in b]) 
-
+//     //#Creates random letter-number ID of nbytes *2  characters long -1.
+//     //b = [random.randint(0, 255) for i in range(nbytes)]
+//     //return "".join([f"{x:x}" for x in b]) 
 }
 
 function clear_maze(){
@@ -304,7 +302,6 @@ function create_maze(maze, width, height, walls){
 }
 }
 
-//export 
 function generate_maze(height, width){
     const wall = "1";
     const cell = "0";

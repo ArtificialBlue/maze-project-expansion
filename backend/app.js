@@ -1,5 +1,3 @@
-//import {generate_maze} from './api/generator.js';
-
 const http = require('http');
 const express = require('express');
 var app = express();
@@ -14,7 +12,6 @@ app.all('/', function(req, res) {
 })
 
 app.all('/api/:size', (req, res) => {
-  //res.send(req.params);
   res.send(generate_maze(parseInt(req.params.size),parseInt(req.params.size)) + "\n");
 })
 
