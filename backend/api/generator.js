@@ -5,7 +5,7 @@ const Libhoney = require("libhoney");
 
 let hny = new Libhoney({
     //!Setup as environment variables!//
-   writeKey: process.env["HONEYCOMB_API_KEY"],
+   writeKey: process.env.HONEYCOMB_API_KEY,
    dataset: "honeycomb-javascript-maze"
  });
 
@@ -20,58 +20,57 @@ function random_id(nbytes){
 
 let maze = [];
 
-function clear_maze(parent_id = None, trace_id =  None){
+function createEvent(trace_id =  null ,parent_id = null){
     const span_id = random_id(8);
     const initialT = performance.now();
-    const functionEvent = hny.newEvent();
-    functionEvent.timestamp = Date.now();
+    const Event = hny.newEvent();
+    Event.add({
+        "initial_time": initialT,
+        "trace.span_id": span_id,
+        "trace.trace_id": trace_id,
+        "trace.parent_id": parent_id
+    });
+    Event.timestamp = Date.now();
+    return Event
+}
+
+function endEvent(Event, name, functionName = null, additionalFields = null){ 
+    const endT = performance.now();
+    const totalT = endT - Event.data['initial_time'];
+    Event.add({
+        "duration_ms": totalT,
+        "function": functionName,
+        "name": name,
+    });
+    //Add Additional Fields
+    //additionalFields Type is Object {}
+    for (var field in additionalFields) {
+        Event.addField(field,additionalFields[field]);
+    }
+    Event.send();
+}
+
+function clear_maze(parent_id = null, trace_id =  null){
+    const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     maze.length = 0;
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": "clear_maze()",
-        "name": "clear_maze()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "trace.parent_id": parent_id
-    });
-    functionEvent.send();
+    endEvent(functionEvent,"clear_maze()","clear_maze()");
 }
 
-function init_maze(size, parent_id = None, trace_id =  None){
-    const span_id = random_id(8);
-    const initialT = performance.now();
-    const functionEvent = hny.newEvent();
-    functionEvent.timestamp = Date.now();
+function init_maze(size, parent_id = null, trace_id =  null){
+    const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     for (let i = 0; i < size; i++) {
         let line = Array(size).fill("u");
         maze.push(line);
       }
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": "init_maze()",
-        "name": "init_maze()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "trace.parent_id": parent_id,
-        "dimension": size
-    });
-    functionEvent.send();
-
+    endEvent(functionEvent,"init_maze()","init_maze()",{"dimension": size});
 }
 
-function make_walls(width, height, parent_id = None, trace_id =  None){
-    const span_id = random_id(8);
-    const initialT = performance.now();
-    const functionEvent = hny.newEvent();
-    functionEvent.timestamp = Date.now();
+function make_walls(width, height, parent_id = null, trace_id =  null){
+    const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
@@ -81,28 +80,11 @@ function make_walls(width, height, parent_id = None, trace_id =  None){
         }
     }
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": "make_walls()",
-        "name": "make_walls()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "trace.parent_id": parent_id,
-        "width": width,
-        "height": height,
-        "dimension": width
-    });
-    functionEvent.send();
-
+    endEvent(functionEvent,"make_walls()","make_walls()",{"width": width,"height": height,"dimension": width});
 }
 
-function delete_wall(walls, rand_wall, parent_id = None, trace_id =  None){
-    const span_id = random_id(8);
-    const initialT = performance.now();
-    const functionEvent = hny.newEvent();
-    functionEvent.timestamp = Date.now();
+function delete_wall(walls, rand_wall, parent_id = null, trace_id =  null){
+    const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     walls.forEach(function (wall) {
         if (wall[0] == rand_wall[0] && wall[1] == rand_wall[1]){
@@ -110,26 +92,11 @@ function delete_wall(walls, rand_wall, parent_id = None, trace_id =  None){
         }
     });
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": "delete_wall()",
-        "name": "delete_wall()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "trace.parent_id": parent_id,
-        "walls": walls,
-        "rand_wall": rand_wall
-    }); 
-    functionEvent.send();
+    endEvent(functionEvent,"delete_wall()","delete_wall()",{"walls": walls,"rand_wall": rand_wall});
 }
 
-function create_entrance(maze, width, parent_id = None, trace_id =  None){
-    const span_id = random_id(8);
-    const initialT = performance.now();
-    const functionEvent = hny.newEvent();
-    functionEvent.timestamp = Date.now();
+function create_entrance(maze, width, parent_id = null, trace_id =  null){
+    const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     for (let i = 0; i < width; i++) {
         if (maze[1][i] == "0") {
@@ -138,27 +105,11 @@ function create_entrance(maze, width, parent_id = None, trace_id =  None){
         }
     }
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": " create_entrance()",
-        "name": " create_entrance()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "trace.parent_id": parent_id,
-        "maze": maze,
-        "width": width,
-        "dimension": width
-    });
-    functionEvent.send();
+    endEvent(functionEvent,"create_entrance()","create_entrance()",{"maze": maze, "width": width,"dimension": width});
 }
 
-function create_exit(maze, width, height, parent_id = None, trace_id =  None){
-    const span_id = random_id(8);
-    const initialT = performance.now();
-    const functionEvent = hny.newEvent();
-    functionEvent.timestamp = Date.now();
+function create_exit(maze, width, height, parent_id = null, trace_id =  null){
+    const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     for (let i = width - 1; i >= 0; i--) {
         if (maze[height - 2][i] == "0") {
@@ -167,55 +118,21 @@ function create_exit(maze, width, height, parent_id = None, trace_id =  None){
         }
     }
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": "create_exit()",
-        "name": "create_exit()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "trace.parent_id": parent_id,
-        "maze": maze,
-        "width": width,
-        "height": height,
-        "dimension": width
-    });
-    functionEvent.send();
+    endEvent(functionEvent,"create_exit()","create_exit()",{"maze": maze,"width": width,"height": height,"dimension": width});
 }
 
-function create_entrance_exit(maze, width, height, parent_id = None, trace_id =  None){
-    const span_id = random_id(8);
-    const initialT = performance.now();
-    const functionEvent = hny.newEvent();
-    functionEvent.timestamp = Date.now();
+function create_entrance_exit(maze, width, height, parent_id = null, trace_id =  null){
+    const functionEvent = createEvent(trace_id,parent_id);
+    const span_id = functionEvent.data['trace.span_id'];
     //-----------
     create_entrance(maze, width, span_id, trace_id);
     create_exit(maze, width, height, span_id, trace_id);
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": "create_entrance_exit()",
-        "name": "create_entrance_exit()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "trace.parent_id": parent_id,
-        "maze": maze,
-        "width": width,
-        "height": height,
-        "dimension": width
-    });
-    functionEvent.send();
-
+    endEvent(functionEvent,"create_entrance_exit()","create_entrance_exit()",{"maze": maze,"width": width,"height": height,"dimension": width});
 }
 
-function surrounding_cells(rand_wall, parent_id = None, trace_id =  None){
-    const span_id = random_id(8);
-    const initialT = performance.now();
-    const functionEvent = hny.newEvent();
-    functionEvent.timestamp = Date.now();
+function surrounding_cells(rand_wall, parent_id = null, trace_id =  null){
+    const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     let s_cells = 0;
 
@@ -232,26 +149,14 @@ function surrounding_cells(rand_wall, parent_id = None, trace_id =  None){
         s_cells += 1;
     }
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": "surrounding_cells()",
-        "name": "surrounding_cells()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "trace.parent_id": parent_id,
-        "rand_wall": rand_wall
-    });
-    functionEvent.send();
+    endEvent(functionEvent,"surrounding_cells()","surrounding_cells()",{"rand_wall": rand_wall});
 
     return s_cells;
 }
 
-function flatten_maze(maze, parent_id = None, trace_id =  None){
-    const span_id = random_id(8);
-    const initialT = performance.now();
-    const functionEvent = hny.newEvent();
+function flatten_maze(maze, parent_id = null, trace_id =  null){
+    const functionEvent = createEvent(trace_id,parent_id);
+    const span_id = functionEvent.data['trace.span_id'];
     //-----------
     let bitstring = "";
     for (let item of maze) {
@@ -259,30 +164,16 @@ function flatten_maze(maze, parent_id = None, trace_id =  None){
         else bitstring += item;
     }
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": "flatten_maze()",
-        "name": "flatten_maze()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "trace.parent_id": parent_id,
-        "maze": maze
-    });
-    functionEvent.send();
+    endEvent(functionEvent,"flatten_maze()","flatten_maze()",{"maze": maze});
 
     return bitstring;
 }
 
 
-function create_maze(maze, width, height, walls, parent_id = None, trace_id = None){
-    const span_id = random_id(8);
-    const initialT = performance.now();
-    const functionEvent = hny.newEvent();
-    functionEvent.timestamp = Date.now();
+function create_maze(maze, width, height, walls, parent_id = null, trace_id = null){
+    const functionEvent = createEvent(trace_id,parent_id);
+    const span_id = functionEvent.data['trace.span_id'];
     //-----------
-    //!!Additional complicated subroutine instrumentation because of continue statements. Pay close attention.
     let wallsIter =  walls[Symbol.iterator]();
 
     let condition = wallsIter.next();
@@ -555,32 +446,13 @@ function create_maze(maze, width, height, walls, parent_id = None, trace_id = No
     delete_wall(walls, rand_wall, span_id, trace_id);
 }
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": "create_maze()",
-        "name": "create_maze()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "trace.parent_id": parent_id,
-        "maze": maze,
-        "width": width,
-        "height": height,
-        "walls": walls,
-        "dimension": width
-    });
-    functionEvent.send();
-
+    endEvent(functionEvent,"create_maze()","create_maze()",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width});
 }
 
 function generate_maze(height, width){
     const trace_id = random_id(16);
-    const span_id = random_id(8);
-    const initialT = performance.now();
-    const functionEvent = hny.newEvent();
-    functionEvent.timestamp = Date.now();
+    const functionEvent = createEvent(trace_id);
+    const span_id = functionEvent.data['trace.span_id'];
     //-----------
     const wall = "1";
     const cell = "0";
@@ -628,21 +500,7 @@ function generate_maze(height, width){
     flattened_maze = flatten_maze(maze, span_id, trace_id);
 
     //-----------
-    const endT = performance.now();
-    const totalT = endT - initialT;
-
-    functionEvent.add({
-        "duration_ms": totalT,
-        "function": "generate_maze()",
-        "name": "generate_maze()",
-        "trace.trace_id": trace_id,
-        "trace.span_id": span_id,
-        "width": width,
-        "height": height,
-        "dimension": width
-    });
-    functionEvent.send();
+    endEvent(functionEvent,"generate_maze()","generate_maze()",{"width": width,"height": height,"dimension": width});
 
     return flattened_maze;
-
 }
