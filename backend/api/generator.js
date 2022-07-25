@@ -20,7 +20,7 @@ function random_id(nbytes){
 
 let maze = [];
 
-function createEvent(trace_id =  null ,parent_id = null){
+function createEvent(trace_id, parent_id = null){
     const span_id = random_id(8);
     const initialT = performance.now();
     const Event = hny.newEvent();
@@ -50,7 +50,7 @@ function endEvent(Event, name, functionName = null, additionalFields = null){
     Event.send();
 }
 
-function clear_maze(parent_id = null, trace_id =  null){
+function clear_maze(trace_id, parent_id = null){
     const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     maze.length = 0;
@@ -58,7 +58,7 @@ function clear_maze(parent_id = null, trace_id =  null){
     endEvent(functionEvent,"clear_maze()","clear_maze()");
 }
 
-function init_maze(size, parent_id = null, trace_id =  null){
+function init_maze(size, trace_id, parent_id = null){
     const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     for (let i = 0; i < size; i++) {
@@ -69,7 +69,7 @@ function init_maze(size, parent_id = null, trace_id =  null){
     endEvent(functionEvent,"init_maze()","init_maze()",{"dimension": size});
 }
 
-function make_walls(width, height, parent_id = null, trace_id =  null){
+function make_walls(width, height, trace_id, parent_id = null){
     const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     for (let i = 0; i < height; i++) {
@@ -83,7 +83,7 @@ function make_walls(width, height, parent_id = null, trace_id =  null){
     endEvent(functionEvent,"make_walls()","make_walls()",{"width": width,"height": height,"dimension": width});
 }
 
-function delete_wall(walls, rand_wall, parent_id = null, trace_id =  null){
+function delete_wall(walls, rand_wall, trace_id, parent_id = null){
     const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     walls.forEach(function (wall) {
@@ -95,7 +95,7 @@ function delete_wall(walls, rand_wall, parent_id = null, trace_id =  null){
     endEvent(functionEvent,"delete_wall()","delete_wall()",{"walls": walls,"rand_wall": rand_wall});
 }
 
-function create_entrance(maze, width, parent_id = null, trace_id =  null){
+function create_entrance(maze, width, trace_id, parent_id = null){
     const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     for (let i = 0; i < width; i++) {
@@ -108,7 +108,7 @@ function create_entrance(maze, width, parent_id = null, trace_id =  null){
     endEvent(functionEvent,"create_entrance()","create_entrance()",{"maze": maze, "width": width,"dimension": width});
 }
 
-function create_exit(maze, width, height, parent_id = null, trace_id =  null){
+function create_exit(maze, width, height, trace_id, parent_id = null){
     const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     for (let i = width - 1; i >= 0; i--) {
@@ -121,17 +121,17 @@ function create_exit(maze, width, height, parent_id = null, trace_id =  null){
     endEvent(functionEvent,"create_exit()","create_exit()",{"maze": maze,"width": width,"height": height,"dimension": width});
 }
 
-function create_entrance_exit(maze, width, height, parent_id = null, trace_id =  null){
+function create_entrance_exit(maze, width, height, trace_id, parent_id = null){
     const functionEvent = createEvent(trace_id,parent_id);
     const span_id = functionEvent.data['trace.span_id'];
     //-----------
-    create_entrance(maze, width, span_id, trace_id);
-    create_exit(maze, width, height, span_id, trace_id);
+    create_entrance(maze, width, trace_id, span_id);
+    create_exit(maze, width, height, trace_id, span_id);
     //-----------
     endEvent(functionEvent,"create_entrance_exit()","create_entrance_exit()",{"maze": maze,"width": width,"height": height,"dimension": width});
 }
 
-function surrounding_cells(rand_wall, parent_id = null, trace_id =  null){
+function surrounding_cells(rand_wall, trace_id, parent_id = null){
     const functionEvent = createEvent(trace_id,parent_id);
     //-----------
     let s_cells = 0;
@@ -154,13 +154,13 @@ function surrounding_cells(rand_wall, parent_id = null, trace_id =  null){
     return s_cells;
 }
 
-function flatten_maze(maze, parent_id = null, trace_id =  null){
+function flatten_maze(maze, trace_id, parent_id = null){
     const functionEvent = createEvent(trace_id,parent_id);
     const span_id = functionEvent.data['trace.span_id'];
     //-----------
     let bitstring = "";
     for (let item of maze) {
-        if (Array.isArray(item)) bitstring += flatten_maze(item, span_id, trace_id);
+        if (Array.isArray(item)) bitstring += flatten_maze(item, trace_id, span_id);
         else bitstring += item;
     }
     //-----------
@@ -170,7 +170,7 @@ function flatten_maze(maze, parent_id = null, trace_id =  null){
 }
 
 
-function create_maze(maze, width, height, walls, parent_id = null, trace_id = null){
+function create_maze(maze, width, height, walls, trace_id, parent_id = null){
     const functionEvent = createEvent(trace_id,parent_id);
     const span_id = functionEvent.data['trace.span_id'];
     //-----------
@@ -194,7 +194,7 @@ function create_maze(maze, width, height, walls, parent_id = null, trace_id = nu
         if (rand_wall[1] != 0) {
             if (maze[rand_wall[0]][rand_wall[1] - 1] == "u" && maze[rand_wall[0]][rand_wall[1] + 1] == "0"){
                 // Find the number of surrounding cells
-                let s_cells = surrounding_cells(rand_wall, span_id, trace_id);
+                let s_cells = surrounding_cells(rand_wall, trace_id, span_id);
 
                 if (s_cells < 2) {
                     // Denote the new path
@@ -230,7 +230,7 @@ function create_maze(maze, width, height, walls, parent_id = null, trace_id = nu
                     }
                     
                 }
-                delete_wall(walls, rand_wall, span_id, trace_id);
+                delete_wall(walls, rand_wall, trace_id, span_id);
 
                 const loopEndT = performance.now();
                 const loopDurationT = loopEndT - loopStartT;
@@ -257,7 +257,7 @@ function create_maze(maze, width, height, walls, parent_id = null, trace_id = nu
         if (rand_wall[0] != 0) {
             if ( maze[rand_wall[0] - 1][rand_wall[1]] == "u" && maze[rand_wall[0] + 1][rand_wall[1]] == "0") {
                 // Find the number of surrounding cells
-                let s_cells = surrounding_cells(rand_wall, span_id, trace_id);
+                let s_cells = surrounding_cells(rand_wall, trace_id, span_id);
 
                 if (s_cells < 2) {
                     // Denote the new path
@@ -295,7 +295,7 @@ function create_maze(maze, width, height, walls, parent_id = null, trace_id = nu
                         }
                     }
                 }
-                delete_wall(walls, rand_wall, span_id, trace_id);
+                delete_wall(walls, rand_wall, trace_id, span_id);
 
                 const loopEndT = performance.now();
                 const loopDurationT = loopEndT - loopStartT;
@@ -324,7 +324,7 @@ function create_maze(maze, width, height, walls, parent_id = null, trace_id = nu
         if (rand_wall[0] != height - 1) {
             if (maze[rand_wall[0] + 1][rand_wall[1]] == "u" && maze[rand_wall[0] - 1][rand_wall[1]] == "0") {
                 // Find the number of surrounding cells
-                let s_cells = surrounding_cells(rand_wall, span_id, trace_id);
+                let s_cells = surrounding_cells(rand_wall, trace_id, span_id);
                 if (s_cells < 2) {
                     // Denote the new path
                     maze[rand_wall[0]][rand_wall[1]] = "0";
@@ -359,7 +359,7 @@ function create_maze(maze, width, height, walls, parent_id = null, trace_id = nu
                         
                     }
                 }
-                delete_wall(walls, rand_wall, span_id, trace_id);
+                delete_wall(walls, rand_wall, trace_id, span_id);
 
                 const loopEndT = performance.now();
                 const loopDurationT = loopEndT - loopStartT;
@@ -386,7 +386,7 @@ function create_maze(maze, width, height, walls, parent_id = null, trace_id = nu
         if (rand_wall[1] != width - 1) {
             if (maze[rand_wall[0]][rand_wall[1] + 1] == "u" && maze[rand_wall[0]][rand_wall[1] - 1] == "0") {
                 // Find the number of surrounding cells
-                let s_cells = surrounding_cells(rand_wall, span_id, trace_id);
+                let s_cells = surrounding_cells(rand_wall, trace_id, span_id);
 
                 if (s_cells < 2) {
                     // Denote the new path
@@ -421,7 +421,7 @@ function create_maze(maze, width, height, walls, parent_id = null, trace_id = nu
                         }
                     }
                 }
-                delete_wall(walls, rand_wall, span_id, trace_id);
+                delete_wall(walls, rand_wall, trace_id, span_id);
 
                 const loopEndT = performance.now();
                 const loopDurationT = loopEndT - loopStartT;
@@ -443,7 +443,7 @@ function create_maze(maze, width, height, walls, parent_id = null, trace_id = nu
                 continue;
         }
     }
-    delete_wall(walls, rand_wall, span_id, trace_id);
+    delete_wall(walls, rand_wall, trace_id, span_id);
 }
     //-----------
     endEvent(functionEvent,"create_maze()","create_maze()",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width});
@@ -457,9 +457,9 @@ function generate_maze(height, width){
     const wall = "1";
     const cell = "0";
 
-    clear_maze(span_id, trace_id);
+    clear_maze(trace_id, span_id);
 
-    init_maze(height,span_id,trace_id);
+    init_maze(height,trace_id,span_id);
 
     // Randomize starting point and set it as a cell
     let starting_height = Math.floor(Math.random() * height);
@@ -491,13 +491,13 @@ function generate_maze(height, width){
     maze[starting_height][starting_width + 1] = "1";
     maze[starting_height + 1][starting_width] = "1";
 
-    create_maze(maze, width, height, walls, span_id, trace_id);
+    create_maze(maze, width, height, walls, trace_id, span_id);
 
-    make_walls(width, height, span_id,trace_id);
+    make_walls(width, height, trace_id, span_id);
 
-    create_entrance_exit(maze, width, height, span_id, trace_id);
+    create_entrance_exit(maze, width, height, trace_id, span_id);
 
-    flattened_maze = flatten_maze(maze, span_id, trace_id);
+    flattened_maze = flatten_maze(maze, trace_id, span_id);
 
     //-----------
     endEvent(functionEvent,"generate_maze()","generate_maze()",{"width": width,"height": height,"dimension": width});
