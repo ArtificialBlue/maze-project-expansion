@@ -9,7 +9,7 @@ let hny = new Libhoney({
    dataset: "honeycomb-javascript-maze"
  });
 
-module.exports = random_id;
+//module.exports = random_id;
 
 function random_id(nbytes){
     let hexString = "";
@@ -184,9 +184,7 @@ function create_maze(maze, width, height, walls, trace_id, parent_id = null){
     let condition = wallsIter.next();
 
     while( !condition.done && walls.length > 0){
-        const loopEvent = hny.newEvent();
-        const loopStartT = performance.now();
-
+        const loopEvent = createEvent(trace_id,span_id);
 
         // Pick a random wall
         let ranIndex = Math.floor(Math.random() * walls.length); // - 1;
@@ -237,27 +235,11 @@ function create_maze(maze, width, height, walls, trace_id, parent_id = null){
                 }
                 delete_wall(walls, rand_wall, trace_id, span_id);
 
-                const loopEndT = performance.now();
-                const loopDurationT = loopEndT - loopStartT;
+                endEvent(loopEvent,"ifLeftWall", null,{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width});
 
-                loopEvent.add({ 
-                    "duration_ms": loopDurationT,
-                    "trace.trace_id": trace_id,
-                    "trace.span_id": random_id(8),
-                    "trace.parent_id": span_id,
-                    "name": "ifLeftWall",
-                    "maze": maze,
-                    "width": width,
-                    "height": height,
-                    "walls": walls,
-                    "dimension": width
-                });
-                loopEvent.send();
                 continue;
             }
-            
         }
-
         //Check if it is an upper wall
         if (rand_wall[0] != 0) {
             if ( maze[rand_wall[0] - 1][rand_wall[1]] == "u" && maze[rand_wall[0] + 1][rand_wall[1]] == "0") {
@@ -302,29 +284,11 @@ function create_maze(maze, width, height, walls, trace_id, parent_id = null){
                 }
                 delete_wall(walls, rand_wall, trace_id, span_id);
 
-                const loopEndT = performance.now();
-                const loopDurationT = loopEndT - loopStartT;
-
-                loopEvent.add({ 
-                    "duration_ms": loopDurationT,
-                    "trace.trace_id": trace_id,
-                    "trace.span_id": random_id(8),
-                    "trace.parent_id": span_id,
-                    "name": "ifUpperWall",
-                    "maze": maze,
-                    "width": width,
-                    "height": height,
-                    "walls": walls,
-                    "dimension": width
-                });
-                loopEvent.send();
+                endEvent(loopEvent,"ifUpperWall", null,{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width});
 
                 continue;
             }
-            
         }
-
-
         //Check the bottom wall
         if (rand_wall[0] != height - 1) {
             if (maze[rand_wall[0] + 1][rand_wall[1]] == "u" && maze[rand_wall[0] - 1][rand_wall[1]] == "0") {
@@ -366,27 +330,11 @@ function create_maze(maze, width, height, walls, trace_id, parent_id = null){
                 }
                 delete_wall(walls, rand_wall, trace_id, span_id);
 
-                const loopEndT = performance.now();
-                const loopDurationT = loopEndT - loopStartT;
-
-                loopEvent.add({ 
-                    "duration_ms": loopDurationT,
-                    "trace.trace_id": trace_id,
-                    "trace.span_id": random_id(8),
-                    "trace.parent_id": span_id,
-                    "name": "ifBottomWall",
-                    "maze": maze,
-                    "width": width,
-                    "height": height,
-                    "walls": walls,
-                    "dimension": width
-                });
-                loopEvent.send();
+                endEvent(loopEvent,"ifBottomWall", null,{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width});
 
                 continue;
             }
         }
-
         //Check the right wall
         if (rand_wall[1] != width - 1) {
             if (maze[rand_wall[0]][rand_wall[1] + 1] == "u" && maze[rand_wall[0]][rand_wall[1] - 1] == "0") {
@@ -428,22 +376,7 @@ function create_maze(maze, width, height, walls, trace_id, parent_id = null){
                 }
                 delete_wall(walls, rand_wall, trace_id, span_id);
 
-                const loopEndT = performance.now();
-                const loopDurationT = loopEndT - loopStartT;
-
-                loopEvent.add({ 
-                    "duration_ms": loopDurationT,
-                    "trace.trace_id": trace_id,
-                    "trace.span_id": random_id(8),
-                    "trace.parent_id": span_id,
-                    "name": "ifRightWall",
-                    "maze": maze,
-                    "width": width,
-                    "height": height,
-                    "walls": walls,
-                    "dimension": width
-                });
-                loopEvent.send();
+                endEvent(loopEvent,"ifRightWall", null,{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width});
 
                 continue;
         }
