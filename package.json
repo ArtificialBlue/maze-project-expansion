@@ -7,7 +7,7 @@
     "start": "concurrently \"cd frontend && npm start\" \"cd backend && python3 app.py\"",
     "frontend": "cd frontend && npm start",
     "backend": "cd backend && python3 app.py",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
     "eslint": "^8.20.0",
-    "eslint-config-prettier": "^8.5.0"
+    "eslint-config-prettier": "^8.5.0",
+    "jest": "^28.1.3"
   }
 }

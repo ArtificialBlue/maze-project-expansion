@@ -9,13 +9,18 @@ let hny = new Libhoney({
    dataset: "honeycomb-javascript-maze"
  });
 
+module.exports = random_id;
+
 function random_id(nbytes){
     let hexString = "";
-    for (let i = 0; i < nbytes; i++) {
+    while (hexString.length < nbytes * 2){
         let hexRep = Math.floor(Math.random() * 256).toString(16); 
-        hexString += hexRep;
+        if (hexRep.length == 2) {
+            hexString += hexRep;
+        }
     }
-    return hexString
+    return hexString;
+
 }
 
 let maze = [];
