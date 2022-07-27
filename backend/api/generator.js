@@ -57,7 +57,7 @@ function clear_maze(trace_id, parent_id = null){
     //-----------
     maze.length = 0;
     //-----------
-    endEvent(functionEvent,"clear_maze()",{"isSubroutine": false});
+    endEvent(functionEvent,"clear_maze()",{"isFunction": true});
 }
 
 function init_maze(size, trace_id, parent_id = null){
@@ -68,7 +68,7 @@ function init_maze(size, trace_id, parent_id = null){
         maze.push(line);
       }
     //-----------
-    endEvent(functionEvent,"init_maze()",{"dimension": size,"isSubroutine": false});
+    endEvent(functionEvent,"init_maze()",{"dimension": size,"isFunction": true});
 }
 
 function make_walls(width, height, trace_id, parent_id = null){
@@ -82,7 +82,7 @@ function make_walls(width, height, trace_id, parent_id = null){
         }
     }
     //-----------
-    endEvent(functionEvent,"make_walls()",{"width": width,"height": height,"dimension": width,"isSubroutine": false});
+    endEvent(functionEvent,"make_walls()",{"width": width,"height": height,"dimension": width,"isFunction": true});
 }
 
 function delete_wall(walls, rand_wall, trace_id, parent_id = null){
@@ -94,7 +94,7 @@ function delete_wall(walls, rand_wall, trace_id, parent_id = null){
         }
     });
     //-----------
-    endEvent(functionEvent,"delete_wall()",{"walls": walls,"rand_wall": rand_wall, "isSubroutine": false});
+    endEvent(functionEvent,"delete_wall()",{"walls": walls,"rand_wall": rand_wall, "isFunction": true});
 }
 
 function create_entrance(maze, width, trace_id, parent_id = null){
@@ -107,7 +107,7 @@ function create_entrance(maze, width, trace_id, parent_id = null){
         }
     }
     //-----------
-    endEvent(functionEvent,"create_entrance()",{"maze": maze, "width": width,"dimension": width, "isSubroutine": false});
+    endEvent(functionEvent,"create_entrance()",{"maze": maze, "width": width,"dimension": width, "isFunction": true});
 }
 
 function create_exit(maze, width, height, trace_id, parent_id = null){
@@ -120,7 +120,7 @@ function create_exit(maze, width, height, trace_id, parent_id = null){
         }
     }
     //-----------
-    endEvent(functionEvent,"create_exit()",{"maze": maze,"width": width,"height": height,"dimension": width, "isSubroutine": false});
+    endEvent(functionEvent,"create_exit()",{"maze": maze,"width": width,"height": height,"dimension": width, "isFunction": true});
 }
 
 function create_entrance_exit(maze, width, height, trace_id, parent_id = null){
@@ -130,7 +130,7 @@ function create_entrance_exit(maze, width, height, trace_id, parent_id = null){
     create_entrance(maze, width, trace_id, span_id);
     create_exit(maze, width, height, trace_id, span_id);
     //-----------
-    endEvent(functionEvent,"create_entrance_exit()",{"maze": maze,"width": width,"height": height,"dimension": width, "isSubroutine": false});
+    endEvent(functionEvent,"create_entrance_exit()",{"maze": maze,"width": width,"height": height,"dimension": width, "isFunction": true});
 }
 
 function surrounding_cells(rand_wall, trace_id, parent_id = null){
@@ -151,7 +151,7 @@ function surrounding_cells(rand_wall, trace_id, parent_id = null){
         s_cells += 1;
     }
     //-----------
-    endEvent(functionEvent,"surrounding_cells()",{"rand_wall": rand_wall, "isSubroutine": false});
+    endEvent(functionEvent,"surrounding_cells()",{"rand_wall": rand_wall, "isFunction": true});
 
     return s_cells;
 }
@@ -166,7 +166,7 @@ function flatten_maze(maze, trace_id, parent_id = null){
         else bitstring += item;
     }
     //-----------
-    endEvent(functionEvent,"flatten_maze()",{"maze": maze,"isSubroutine": false});
+    endEvent(functionEvent,"flatten_maze()",{"maze": maze,"isFunction": true});
 
     return bitstring;
 }
@@ -231,7 +231,7 @@ function create_maze(maze, width, height, walls, trace_id, parent_id = null){
                 }
                 delete_wall(walls, rand_wall, trace_id, span_id);
 
-                endEvent(loopEvent,"ifLeftWall",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width, "isSubroutine": true});
+                endEvent(loopEvent,"ifLeftWall",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width, "isFunction": false});
 
                 continue;
             }
@@ -280,7 +280,7 @@ function create_maze(maze, width, height, walls, trace_id, parent_id = null){
                 }
                 delete_wall(walls, rand_wall, trace_id, span_id);
 
-                endEvent(loopEvent,"ifUpperWall",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width, "isSubroutine": true});
+                endEvent(loopEvent,"ifUpperWall",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width, "isFunction": false});
 
                 continue;
             }
@@ -326,7 +326,7 @@ function create_maze(maze, width, height, walls, trace_id, parent_id = null){
                 }
                 delete_wall(walls, rand_wall, trace_id, span_id);
 
-                endEvent(loopEvent,"ifBottomWall",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width, "isSubroutine": true});
+                endEvent(loopEvent,"ifBottomWall",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width, "isFunction": false});
 
                 continue;
             }
@@ -372,7 +372,7 @@ function create_maze(maze, width, height, walls, trace_id, parent_id = null){
                 }
                 delete_wall(walls, rand_wall, trace_id, span_id);
 
-                endEvent(loopEvent,"ifRightWall",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width, "isSubroutine": true});
+                endEvent(loopEvent,"ifRightWall",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width, "isFunction": false});
 
                 continue;
         }
@@ -380,7 +380,7 @@ function create_maze(maze, width, height, walls, trace_id, parent_id = null){
     delete_wall(walls, rand_wall, trace_id, span_id);
 }
     //-----------
-    endEvent(functionEvent,"create_maze()",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width, "isSubroutine": false});
+    endEvent(functionEvent,"create_maze()",{"maze": maze,"width": width,"height": height,"walls": walls,"dimension": width, "isFunction": true});
 }
 
 function generate_maze(height, width){
@@ -434,7 +434,7 @@ function generate_maze(height, width){
     flattened_maze = flatten_maze(maze, trace_id, span_id);
 
     //-----------
-    endEvent(functionEvent,"generate_maze()",{"width": width,"height": height,"dimension": width, "isSubroutine": true});
+    endEvent(functionEvent,"generate_maze()",{"width": width,"height": height,"dimension": width, "isFunction": true});
 
     return flattened_maze;
 }

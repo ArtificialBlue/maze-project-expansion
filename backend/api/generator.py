@@ -4,7 +4,7 @@ from datetime import datetime
 import libhoney
 
 #!Setup as environment variables!#
-#libhoney.init(writekey="", dataset="honeycomb-python-maze", debug=True)
+libhoney.init(writekey="", dataset="honeycomb-python-maze", debug=True)
 
 maze = []
 
