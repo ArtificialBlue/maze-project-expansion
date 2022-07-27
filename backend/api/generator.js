@@ -1,5 +1,5 @@
 module.exports = generate_maze;
-//Uncomment for Testing
+//!!Uncomment for Testing
 //module.exports = random_id;
 const Libhoney = require("libhoney");
 
@@ -13,13 +13,13 @@ function random_id(nbytes){
     let hexString = "";
     while (hexString.length < nbytes * 2){
         let hexRep = Math.floor(Math.random() * 256).toString(16); 
-        if (hexRep.length == 2) {
-            hexString += hexRep;
+        if (hexRep.length < 2) {
+            hexString += "0" + hexRep;
         }
     }
     return hexString;
 
-}
+} 
 
 let maze = [];
 
