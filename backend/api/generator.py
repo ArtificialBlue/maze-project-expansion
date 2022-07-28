@@ -26,7 +26,7 @@ def clear_maze(parent_id = None, trace_id = random_id(16)):
     "name": "clear_maze()",
     "trace.trace_id": trace_id,
     "trace.span_id": span_id,
-    "trace.parent_id": parent_id,
+    "trace.parent_id": parent_id
     })
     functionEvent.send()
 
@@ -188,27 +188,7 @@ def create_entrance_exit(maze, width, height, parent_id = None, trace_id = rando
     functionEvent.send()
 
 
-def flatten_maze(maze, parent_id = None, trace_id = random_id(16)):
-    intialT = datetime.now()
-    functionEvent = libhoney.new_event()
-    span_id = random_id(8)
-    """Turn a 2D maze into a string."""
-    #------
-    flattened_maze = "".join(list(chain.from_iterable(maze)))
-    #------
-    endT = datetime.now()
-    totalT = endT - intialT
-    functionEvent.add({"duration_ms": totalT.total_seconds()*1000,
-    "function": "flatten_maze()",
-    "name": "flatten_maze()",
-    "trace.trace_id": trace_id,
-    "trace.span_id": span_id,
-    "trace.parent_id": parent_id,
-    "maze": maze
-    })
-    functionEvent.send()
 
-    return flattened_maze
 
 
 def surrounding_cells(rand_wall, parent_id = None, trace_id = random_id(16)):
@@ -241,6 +221,8 @@ def surrounding_cells(rand_wall, parent_id = None, trace_id = random_id(16)):
     functionEvent.send()
 
     return s_cells
+
+
 
 
 
