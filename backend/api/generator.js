@@ -28,9 +28,6 @@ function initialT() {
     return performance.now();
 }
 
-
-//hny.addDynamicField("trace.span_id",span_id);
-
 standardEvent = hny.newBuilder();
 standardEvent.addDynamicField("initial_time",initialT);
 standardEvent.addDynamicField("trace.span_id",span_id);
