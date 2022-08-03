@@ -24,15 +24,23 @@ function span_id() {
     return random_id(8);
 }
 
-hny.addDynamicField("trace.span_id",span_id);
+function initialT() {
+    return performance.now();
+}
+
+
+//hny.addDynamicField("trace.span_id",span_id);
+
+standardEvent = hny.newBuilder();
+standardEvent.addDynamicField("initial_time",initialT);
+standardEvent.addDynamicField("trace.span_id",span_id);
+
 
 let maze = [];
 
 function createEvent(trace_id, parent_id = null) {
-  const initialT = performance.now();
-  const Event = hny.newEvent();
+  const Event = standardEvent.newEvent();
   Event.add({
-    initial_time: initialT,
     "trace.trace_id": trace_id,
     "trace.parent_id": parent_id,
   });
