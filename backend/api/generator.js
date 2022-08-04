@@ -20,7 +20,7 @@ function random_id(nbytes) {
   return hexString;
 }
 
-function getSpan_id() {
+function getSpanId() {
     return random_id(8);
 }
 
