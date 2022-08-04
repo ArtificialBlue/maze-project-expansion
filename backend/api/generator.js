@@ -20,23 +20,23 @@ function random_id(nbytes) {
   return hexString;
 }
 
-function span_id() {
+function getSpan_id() {
     return random_id(8);
 }
 
-function initialT() {
+function getInitialTime() {
     return performance.now();
 }
 
-standardEvent = hny.newBuilder();
-standardEvent.addDynamicField("initial_time",initialT);
-standardEvent.addDynamicField("trace.span_id",span_id);
+eventBuilder = hny.newBuilder();
+eventBuilder.addDynamicField("initial_time",getInitialTime);
+eventBuilder.addDynamicField("trace.span_id",getSpan_id);
 
 
 let maze = [];
 
 function createEvent(trace_id, parent_id = null) {
-  const Event = standardEvent.newEvent();
+  const Event = eventBuilder.newEvent();
   Event.add({
     "trace.trace_id": trace_id,
     "trace.parent_id": parent_id,
