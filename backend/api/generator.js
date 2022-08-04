@@ -19,11 +19,6 @@ hny.sendNow({
     randomFloat: Math.random()
 });
 
-hny.sendNow({
-    name: "app.js Initialized",
-    randomFloat: Math.random()
-});
-
 function random_id(nbytes) {
   let hexString = "";
   while (hexString.length < nbytes * 2) {
