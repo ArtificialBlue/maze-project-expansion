@@ -9,6 +9,11 @@ let hny = new Libhoney({
   dataset: "honeycomb-javascript-maze",
 });
 
+hny.sendNow({
+    name: "app.js Initialized",
+    randomFloat: Math.random()
+});
+
 function random_id(nbytes) {
   let hexString = "";
   while (hexString.length < nbytes * 2) {
@@ -49,6 +54,7 @@ function endEvent(Event, name, additionalFields = null) {
     Event.addField(field, additionalFields[field]);
   }
   Event.send();
+  //hny.flush();
 }
 
 function clear_maze(trace_id, parent_id = null) {
