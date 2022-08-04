@@ -40,7 +40,7 @@ function getInitialTime() {
 
 eventBuilder = hny.newBuilder();
 eventBuilder.addDynamicField("initial_time",getInitialTime);
-eventBuilder.addDynamicField("trace.span_id",getSpan_id);
+eventBuilder.addDynamicField("trace.span_id",getSpanId);
 
 
 let maze = [];
