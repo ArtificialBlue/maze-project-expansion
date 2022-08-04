@@ -54,7 +54,7 @@ function endEvent(Event, name, additionalFields = null) {
     Event.addField(field, additionalFields[field]);
   }
   Event.send();
-  //hny.flush();
+  hny.flush();
 }
 
 function clear_maze(trace_id, parent_id = null) {
