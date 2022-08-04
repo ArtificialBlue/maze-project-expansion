@@ -38,7 +38,6 @@ function createEvent(trace_id, parent_id = null) {
     "trace.trace_id": trace_id,
     "trace.parent_id": parent_id,
   });
-  Event.metadata = {id: "example-metadata-id"}
   Event.timestamp = Date.now();
   return Event;
 }
@@ -55,6 +54,7 @@ function endEvent(Event, name, additionalFields = null) {
   for (var field in additionalFields) {
     Event.addField(field, additionalFields[field]);
   }
+  Event.metadata = {id: name}
   Event.send();
 }
 
