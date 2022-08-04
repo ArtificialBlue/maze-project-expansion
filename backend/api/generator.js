@@ -7,7 +7,13 @@ let hny = new Libhoney({
   //!Setup as environment variables!//
   writeKey: process.env.HONEYCOMB_API_KEY,
   dataset: "honeycomb-javascript-maze",
+  responseCallback: responses => {
+    responses.forEach(resp => {
+      console.log(resp);
+    });
+  }
 });
+
 
 function random_id(nbytes) {
   let hexString = "";
@@ -57,6 +63,7 @@ function endEvent(Event, name, additionalFields = null) {
   for (var field in additionalFields) {
     Event.addField(field, additionalFields[field]);
   }
+  Event.metadata = {id: name}
   Event.send();
 }
 
