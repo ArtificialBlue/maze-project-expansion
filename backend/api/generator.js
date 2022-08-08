@@ -14,6 +14,10 @@ let hny = new Libhoney({
   }
 });
 
+hny.sendNow({
+    name: "app.js Initialized",
+    randomFloat: Math.random()
+});
 
 function random_id(nbytes) {
   let hexString = "";
@@ -36,7 +40,7 @@ function getInitialTime() {
 
 eventBuilder = hny.newBuilder();
 eventBuilder.addDynamicField("initial_time",getInitialTime);
-eventBuilder.addDynamicField("trace.span_id",getSpan_id);
+eventBuilder.addDynamicField("trace.span_id",getSpanId);
 
 
 let maze = [];
@@ -65,6 +69,7 @@ function endEvent(Event, name, additionalFields = null) {
   }
   Event.metadata = {id: name}
   Event.send();
+  hny.flush();
 }
 
 function clear_maze(trace_id, parent_id = null) {
