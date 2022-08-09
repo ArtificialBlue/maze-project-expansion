@@ -21,12 +21,6 @@ If you're interested in adding/improving a feature to the project, follow these 
 4. Run "python3 app.py" in the command line. This will start a local flask server for testing.
 5. Navigate to localhost:5000 in a web browser to see the routes built by the local flask server.
 
-
-## Roadmap:
-| Skateboard (1 feature) | Bike (2nd feature)     | Car (Extras)           |
-| :--------------------- | :--------------------- | :--------------------- |
-| Route a single, static maze to the front end, and make it playable | Randomly generate mazes on the fly, and deliver those instead of the static one | * Device Web Responsiveness with Ionic * Cross-Platform function with App through CapacitorJS * Multiplayer with Leaderboard through Web-Socket  |
-
 ## Acknowledgements:
 The maze generator is based off of [Orestis Zekai's work](https://github.com/OrWestSide/python/blob/master/maze.py).<br>
 [Click here](https://medium.com/swlh/fun-with-python-1-maze-generator-931639b4fb7e) to learn more about the maze's generation theory.
